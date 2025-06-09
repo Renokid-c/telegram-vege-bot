@@ -10,7 +10,7 @@ export default function App() {
   // Цены указаны за 1 кг или за пучок (для зелени)
   const [products] = useState([
     { id: 1, name: 'Яблоко', price: 300, category: 'Фрукты', imageUrl: '🍎', unit: 'кг' },
-    { id: 2, name: 'Абрикос', price: 240, category: 'Фрукты', imageUrl: '🍑', unit: 'кг' },
+    { id: 2, name: 'Абрикос', price: 240, category: 'Фрукты', imageUrl: '�', unit: 'кг' },
     { id: 3, name: 'Авокадо', price: 500, category: 'Фрукты', imageUrl: '🥑', unit: 'кг' },
     { id: 4, name: 'Банан', price: 200, category: 'Фрукты', imageUrl: '🍌', unit: 'кг' },
     { id: 5, name: 'Кокос', price: 600, category: 'Фрукты', imageUrl: '🥥', unit: 'кг' },
@@ -39,7 +39,7 @@ export default function App() {
 
     { id: 26, name: 'Картофель', price: 140, category: 'Овощи', imageUrl: '🥔', unit: 'кг' },
     { id: 27, name: 'Помидор', price: 360, category: 'Овощи', imageUrl: '🍅', unit: 'кг' },
-    { id: 28, name: 'Морковь', price: 160, category: 'Овощи', imageUrl: '�', unit: 'кг' },
+    { id: 28, name: 'Морковь', price: 160, category: 'Овощи', imageUrl: '🥕', unit: 'кг' },
     { id: 29, name: 'Капуста', price: 190, category: 'Овощи', imageUrl: '🥬', unit: 'кг' },
     { id: 30, name: 'Перец', price: 280, category: 'Овощи', imageUrl: '🌶️', unit: 'кг' },
     { id: 31, name: 'Баклажан', price: 320, category: 'Овощи', imageUrl: '🍆', unit: 'кг' },
@@ -149,7 +149,7 @@ export default function App() {
       // Уменьшаем только если текущее количество больше минимального
       return {
         ...prev,
-        [productId]: Math.max(0, currentQuantity - (unit === 'пучок' ? 1 : 0.5)),
+        [productId]: Math.max(minQuantity, currentQuantity - (unit === 'пучок' ? 1 : 0.5)),
       };
     });
   };
