@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Добавили useEffect
 
 // Иконки из lucide-react
-// Убедитесь, что эта библиотека установлена: npm install lucide-react или yarn add lucide-react
 import { ShoppingCart, XCircle, Package, User, Phone, MapPin, NotebookPen, Plus, Minus } from 'lucide-react';
 
 // Главный компонент приложения
@@ -10,7 +9,7 @@ export default function App() {
   // Цены указаны за 1 кг или за пучок (для зелени)
   const [products] = useState([
     { id: 1, name: 'Яблоко', price: 300, category: 'Фрукты', imageUrl: '🍎', unit: 'кг' },
-    { id: 2, name: 'Абрикос', price: 240, category: 'Фрукты', imageUrl: '�', unit: 'кг' },
+    { id: 2, name: 'Абрикос', price: 240, category: 'Фрукты', imageUrl: '🍑', unit: 'кг' },
     { id: 3, name: 'Авокадо', price: 500, category: 'Фрукты', imageUrl: '🥑', unit: 'кг' },
     { id: 4, name: 'Банан', price: 200, category: 'Фрукты', imageUrl: '🍌', unit: 'кг' },
     { id: 5, name: 'Кокос', price: 600, category: 'Фрукты', imageUrl: '🥥', unit: 'кг' },
@@ -19,7 +18,7 @@ export default function App() {
     { id: 8, name: 'Лимон', price: 180, category: 'Фрукты', imageUrl: '🍋', unit: 'кг' },
     { id: 9, name: 'Лайм', price: 220, category: 'Фрукты', imageUrl: '🟢', unit: 'кг' },
     { id: 10, name: 'Манго', price: 560, category: 'Фрукты', imageUrl: '🥭', unit: 'кг' },
-    { id: 11, name: 'Апельсин', price: 260, category: 'Фрукты', imageUrl: '🍊', unit: 'кг' },
+    { id: 11, name: 'Апельсин', price: 260, category: 'Фрукты', imageUrl: '�', unit: 'кг' },
     { id: 12, name: 'Персик', price: 340, category: 'Фрукты', imageUrl: '🍑', unit: 'кг' },
     { id: 13, name: 'Груша', price: 280, category: 'Фрукты', imageUrl: '🍐', unit: 'кг' },
     { id: 14, name: 'Ананас', price: 440, category: 'Фрукты', imageUrl: '🍍', unit: 'кг' },
@@ -42,7 +41,7 @@ export default function App() {
     { id: 28, name: 'Морковь', price: 160, category: 'Овощи', imageUrl: '🥕', unit: 'кг' },
     { id: 29, name: 'Капуста', price: 190, category: 'Овощи', imageUrl: '🥬', unit: 'кг' },
     { id: 30, name: 'Перец', price: 280, category: 'Овощи', imageUrl: '🌶️', unit: 'кг' },
-    { id: 31, name: 'Баклажан', price: 320, category: 'Овощи', imageUrl: '🍆', unit: 'кг' },
+    { id: 31, name: 'Bаклажан', price: 320, category: 'Овощи', imageUrl: '🍆', unit: 'кг' },
     { id: 32, name: 'Цветная капуста', price: 270, category: 'Овощи', imageUrl: '🥦', unit: 'кг' },
     { id: 33, name: 'Лук', price: 120, category: 'Овощи', imageUrl: '🧅', unit: 'кг' },
     { id: 34, name: 'Чеснок', price: 220, category: 'Овощи', imageUrl: '🧄', unit: 'кг' },
@@ -101,6 +100,15 @@ export default function App() {
   // Состояние для временного количества товара на карточке
   const [tempProductQuantities, setTempProductQuantities] = useState({});
 
+  // Эффект для автоматического расширения Mini App при загрузке
+  useEffect(() => {
+    // Проверяем, что объект Telegram WebApp API доступен
+    if (window.Telegram && window.Telegram.WebApp) {
+      // Разворачиваем Mini App на весь экран WebView
+      window.Telegram.WebApp.expand();
+    }
+  }, []); // Пустой массив зависимостей означает, что эффект запустится один раз при монтировании компонента
+
 
   // Функция добавления товара в корзину из карточки
   const addItemToCartFromCard = (product) => {
@@ -144,7 +152,6 @@ export default function App() {
   const decrementProductQuantity = (productId, unit) => {
     setTempProductQuantities((prev) => {
       const currentQuantity = prev[productId] || 0;
-      // Минимальное количество 1 для пучка, 0.5 для кг
       const minQuantity = unit === 'пучок' ? 1 : 0.5;
       // Уменьшаем только если текущее количество больше минимального
       return {
@@ -228,7 +235,7 @@ export default function App() {
   // Фильтрация продуктов по выбранной категории и поисковому запросу
   const filteredProducts = products.filter(product => {
     const matchesCategory = selectedCategory === 'Все' || product.category === selectedCategory;
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = searchQuery.toLowerCase() === '' || product.name.toLowerCase().includes(searchQuery.toLowerCase()); // Corrected search logic
     return matchesCategory && matchesSearch;
   });
 
@@ -282,43 +289,43 @@ export default function App() {
       </div>
 
       {/* Список продуктов */}
-      <main className="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8">
+      <main className="w-full max-w-4xl grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-8"> {/* Adjusted grid for more columns on larger screens, reduced gap */}
         {filteredProducts.map((product) => (
           <div
             key={product.id}
-            className="bg-white rounded-xl shadow-lg p-4 sm:p-6 flex flex-col items-center text-center transform hover:scale-105 transition duration-300 border-4 border-green-400 relative overflow-hidden group"
+            className="bg-white rounded-xl shadow-md p-3 flex flex-col items-center text-center transform hover:scale-105 transition duration-300 border-2 border-green-200 relative overflow-hidden group"
           >
             {/* Overlay для визуального эффекта при наведении */}
             <div className="absolute inset-0 bg-green-500 opacity-0 group-hover:opacity-10 transition-opacity duration-300 pointer-events-none"></div>
 
-            <div className="text-5xl sm:text-6xl mb-3 sm:mb-4 transform group-hover:scale-110 transition-transform duration-300">{product.imageUrl}</div>
-            <h2 className="text-xl sm:text-2xl font-extrabold mb-1 sm:mb-2 text-gray-900">{product.name}</h2>
-            <p className="text-xl sm:text-2xl font-black text-green-600 mb-3 sm:mb-4">{product.price} сом/{product.unit}</p>
+            <div className="text-4xl sm:text-5xl mb-2">{product.imageUrl}</div> {/* Reduced emoji size */}
+            <h2 className="text-lg sm:text-xl font-extrabold mb-1 text-gray-900">{product.name}</h2> {/* Reduced font size */}
+            <p className="text-md sm:text-lg font-black text-green-600 mb-3">{product.price} сом/{product.unit}</p> {/* Reduced font size, reduced margin */}
 
             {/* Кнопки +/- и количество на карточке товара */}
-            <div className="flex items-center justify-center space-x-2 mb-4">
+            <div className="flex items-center justify-center space-x-1 mb-3 w-full"> {/* Reduced space-x, added w-full */}
               <button
                 onClick={() => decrementProductQuantity(product.id, product.unit)}
-                className="p-2 rounded-full bg-green-200 text-green-800 hover:bg-green-300 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
+                className="p-1 rounded-full bg-green-200 text-green-800 hover:bg-green-300 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
               >
-                <Minus size={20} />
+                <Minus size={16} /> {/* Reduced icon size */}
               </button>
-              <span className="text-lg font-bold w-16 text-center">
+              <span className="text-sm font-bold w-12 text-center border-2 border-gray-300 rounded-md py-0.5"> {/* Reduced font size, reduced width */}
                 {tempProductQuantities[product.id] === undefined || tempProductQuantities[product.id] === 0
                   ? (product.unit === 'пучок' ? '0 пуч.' : '0.0 кг')
                   : `${tempProductQuantities[product.id].toFixed(product.unit === 'пучок' ? 0 : 1)} ${product.unit}`}
               </span>
               <button
                 onClick={() => incrementProductQuantity(product.id, product.unit)}
-                className="p-2 rounded-full bg-green-200 text-green-800 hover:bg-green-300 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
+                className="p-1 rounded-full bg-green-200 text-green-800 hover:bg-green-300 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
               >
-                <Plus size={20} />
+                <Plus size={16} /> {/* Reduced icon size */}
               </button>
             </div>
 
             <button
               onClick={() => addItemToCartFromCard(product)}
-              className="w-full py-2 sm:py-3 px-3 sm:px-4 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition duration-300 flex items-center justify-center border-b-4 border-green-700 active:border-b-0 active:translate-y-1 text-base sm:text-lg"
+              className="w-full py-2 px-3 bg-green-600 text-white font-bold rounded-lg shadow-md hover:bg-green-700 transition duration-300 flex items-center justify-center border-b-4 border-green-800 active:border-b-0 active:translate-y-1 text-base sm:text-lg"
             >
               {addedToCartFeedback[product.id] ? (
                 <span className="flex items-center text-base sm:text-lg">Добавлено! 🎉</span>
